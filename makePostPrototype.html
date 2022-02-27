@@ -1,0 +1,30 @@
+<!--This page is a prototype for the posting functionality.  Eventually it will be integrated with other pages.-->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Make Post</title>
+
+		<link rel="stylesheet" href="highlight/styles/vs.min.css">
+	
+		<script src="highlight/highlight.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="makePostPrototype.js"></script>
+	</head>
+
+	<body>
+		<h1>Make Post</h1>
+
+		<textarea id="postTextarea" rows="25" cols="120"></textarea>
+		<br />
+
+		<button id="codeButton">Highlight Code Snippet</button>
+		<button id="submitButton">Submit</button>
+
+		<br />
+
+		<h2>Post Preview:</h2>
+		<div id="postPreview" style="border: 1px solid black"></div>
+	</body>
+</html>
