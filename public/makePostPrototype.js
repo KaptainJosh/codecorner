@@ -3,6 +3,29 @@ $(document).ready(() => {
 
 	$("#submitButton").click(() => {
 		console.log($("#postTextarea").val());
+
+		//Epoch timestamp code based on https://futurestud.io/tutorials/get-number-of-seconds-since-epoch-in-javascript 
+		const currentTime = new Date();
+		const utcMilllisecondsSinceEpoch = currentTime.getTime() + (currentTime.getTimezoneOffset() * 60 * 1000);
+		const utcSecondsSinceEpoch = Math.round(utcMilllisecondsSinceEpoch / 1000);
+
+		const postData = {
+			user: "Prototype",
+			time: utcSecondsSinceEpoch,
+			content: $("#postTextarea").val()
+		};
+
+		fetch("/submitPost", {
+			method: "POST",
+			headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+			body: JSON.stringify(postData)
+			}).then(res => console.log("Post submitted!")
+		);
+
+		window.location.reload();
 	});
 
 	//Mark highlighted text as code
