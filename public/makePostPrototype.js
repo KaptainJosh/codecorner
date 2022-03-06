@@ -1,4 +1,6 @@
 $(document).ready(() => {
+	tags = [];
+
 	updatePostPreview();
 
 	$("#submitButton").click(() => {
@@ -12,7 +14,8 @@ $(document).ready(() => {
 		const postData = {
 			user: "Prototype",
 			time: utcSecondsSinceEpoch,
-			content: $("#postTextarea").val()
+			content: $("#postTextarea").val(),
+			tags: tags
 		};
 
 		fetch("/submitPost", {
@@ -41,6 +44,12 @@ $(document).ready(() => {
 
 	//Update post preview
 	$("#postTextarea").bind("input propertychange", () => {
+		updatePostPreview();
+	});
+
+	$("li").click(function() {
+		tags.push(this.innerText);
+		this.parentNode.removeChild(this);
 		updatePostPreview();
 	});
 });
@@ -118,6 +127,14 @@ function updatePostPreview()
 	$("#postPreview").html(replacedText);
 
 	hljs.highlightAll();
+
+	let tagPreview = "";
+	for (let tag of tags) {
+		tagPreview += tag + ", ";
+		console.log(tagPreview);
+	}
+	tagPreview = tagPreview.substring(0, tagPreview.length - 2);
+	$("#tagPreview").text(tagPreview);
 }
 
 //Return the highlighted portion of a textarea
