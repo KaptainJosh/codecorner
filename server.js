@@ -14,7 +14,7 @@ MongoClient.connect(url, (err, client) => {
 	}
 	db = client.db("CodeCorner");
 
-	app.listen(8080, () => {
+	app.listen(process.env.port || 8080, () => {
 
 	});
 });
