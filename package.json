@@ -19,5 +19,7 @@
   "bugs": {
     "url": "https://github.com/KaptainJosh/codecorner/issues"
   },
-  "homepage": "https://github.com/KaptainJosh/codecorner#readme"
+  "homepage": "https://github.com/KaptainJosh/codecorner#readme",
+  "devDependencies": {},
+  "keywords": []
 }
