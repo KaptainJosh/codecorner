@@ -41,7 +41,7 @@ function Registration() {
         
         if (newUser.username && newUser.password)
         {
-            axios.post('http://localhost:3001/registration', newUser).then(res=> {
+            axios.post('/registration', newUser).then(res=> {
                 if (res.data.message === 'Username already taken')
                 {
                     alert(res.data.message);

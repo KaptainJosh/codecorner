@@ -41,7 +41,7 @@ function Login() {
 
         if (newUser.username && newUser.password)
         {
-            axios.post('http://localhost:3001/login', newUser).then(res=> {
+            axios.post('/login', newUser).then(res=> {
                 if (res.data.message === 'Invalid Login')
                 {
                     alert(res.data.message);
