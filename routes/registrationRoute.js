@@ -1,0 +1,49 @@
+/* Author: Joshua Thomas
+   Class: CSCE 3444
+   Purpose: This file holds the route to use wehn posting the info for registration. 
+*/
+
+const express = require("express");
+const router = express.Router();
+const User = require("../models/userModel");
+const bcrypt = require('bcrypt');
+
+router.route("/registration").post((req, res) => {
+
+    try 
+    {   
+
+        const username = req.body.username;
+        const password = req.body.password;
+
+        User.findOne({username: username}).then(user => {
+            if (user){
+                
+                return res.json({message: "Username already taken"});
+                
+            }
+
+            else 
+            {
+                const passwordHash = bcrypt.hashSync(password, 10);
+
+                const newUser = new User({
+                    username,
+                    passwordHash
+                });
+
+                res.json({username, passwordHash});
+
+                newUser.save();
+            }
+        });
+
+        
+    }
+    catch (error)
+    {
+        res.status(500).json({err: error.message || "Error while registration"})
+    }
+})
+
+module.exports = router;

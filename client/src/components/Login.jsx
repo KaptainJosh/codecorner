@@ -1,6 +1,6 @@
 /* Author: Joshua Thomas
    Class: CSCE 3444
-   Purpose: This file holds the component for the Registration page of our application. 
+   Purpose: This file holds the component for the Login page of our application. 
 */
 
 import React, {useState} from "react";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { Link, useNavigate} from "react-router-dom";
 
 // Registration Component
-function Registration() {
+function Login() {
 
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ function Registration() {
         password: ''
     })
 
-    // handler to handle changes to the input fields in registration forms
+    // handler to handle changes to the input fields in login forms
     function handleChange(event) {
         const {name, value} = event.target;
 
@@ -38,19 +38,19 @@ function Registration() {
             username: input.username,
             password: input.password
         };
-        
+
         if (newUser.username && newUser.password)
         {
-            axios.post('http://localhost:3001/registration', newUser).then(res=> {
-                if (res.data.message === 'Username already taken')
+            axios.post('http://localhost:3001/login', newUser).then(res=> {
+                if (res.data.message === 'Invalid Login')
                 {
                     alert(res.data.message);
                 }   
                 
                 else
                 {
-                    alert("Registered");
-                    navigate("/login");
+                    alert("Logged In");
+                    navigate("/wall");
                 }
             
             });
@@ -68,10 +68,10 @@ function Registration() {
     return <div className="container">
         {/* CodeCorner Logo*/}
         <img src="/assets/images/CodeCornerLogo.png" alt="Logo"/> 
-        {/* Registration Form */}
+        {/* Login Form */}
         
         <form>
-            <h3>Register</h3>
+            <h3>Login</h3>
             {/*Username Field */}
              <div className='form-group'> 
                 <label htmlFor="InputUsername">Username</label>
@@ -83,10 +83,10 @@ function Registration() {
                 <input required onChange={handleChange} name="password" value={input.password} className="form-control" placeholder="Enter Password" type='password'></input>
             </div>
             {/* Submit Button */}
-            <button type="submit" onClick={handleClick} className="btn btn-lg btn-info">Join</button>
+            <button type="submit" onClick={handleClick} className="btn btn-lg btn-info">Login</button>
         </form> 
-        <Link to="/login">Login</Link>  
+        <Link to="/">Register</Link>  
     </div>
 }
 
-export default Registration;
+export default Login;
