@@ -47,8 +47,14 @@ $(document).ready(() => {
 		updatePostPreview();
 	});
 
-	$("li").click(function() {
+	$(".tagToAdd").click(function() {
 		tags.push(this.innerText);
+		this.parentNode.removeChild(this);
+		updatePostPreview();
+	});
+
+	$(".addedTag").click(function() {
+		tags.splice(tags.indexOf(this), 1);
 		this.parentNode.removeChild(this);
 		updatePostPreview();
 	});
@@ -123,18 +129,34 @@ function updatePostPreview()
 		}
 	}
 
-	console.log(replacedText);
 	$("#postPreview").html(replacedText);
 
 	hljs.highlightAll();
 
-	let tagPreview = "";
+	let tagPreview = "<ul>";
 	for (let tag of tags) {
-		tagPreview += tag + ", ";
-		console.log(tagPreview);
+		tagPreview += `<li class="addedTag">` + tag + "</li>";
 	}
-	tagPreview = tagPreview.substring(0, tagPreview.length - 2);
-	$("#tagPreview").text(tagPreview);
+	tagPreview += "</ul>";
+	$("#tagPreview").html(tagPreview);
+
+	$(".addedTag").click(function() {
+		tags.splice(tags.indexOf(this.innerHTML), 1);
+		this.parentNode.removeChild(this);
+
+		let newListElement = document.createElement("li");
+		newListElement.innerHTML = this.innerHTML;
+		newListElement.setAttribute("class", "tagToAdd");
+		
+		newListElement.onclick = function() {
+			tags.push(this.innerText);
+			this.parentNode.removeChild(this);
+			updatePostPreview();
+		};
+		$("#tagSelection").append(newListElement);
+
+		updatePostPreview();
+	});
 }
 
 //Return the highlighted portion of a textarea
