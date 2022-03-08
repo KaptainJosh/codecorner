@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate} from "react-router-dom";
 //import { Link} from "react-router-dom";
 import $ from "jquery";
-const hljs = require("../highlight/highlight")
+const hljs = require("highlight.js")
 
 
 // Registration Component
