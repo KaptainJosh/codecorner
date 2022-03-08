@@ -37,6 +37,7 @@ MongoClient.connect(url, (err, client) => {
 		return console.log(err);
 	}
 	db = client.db("CodeCorner");
+    console.log(`Express server is running on port ${port}`)
 
 	app.listen(process.env.PORT || 8080, () => {
 
@@ -59,9 +60,9 @@ if (process.env.NODE_ENV === 'production')
     app.use(express.static("client/build"));
 }
 // app.use(express.static('public'));
-app.listen(port, function() {
-    console.log(`Express server is running on port ${port}`);
-});
+// app.listen(port, function() {
+//     console.log(`Express server is running on port ${port}`);
+// });
 
 /* Michael's Code*/
 //const express = require('express');
