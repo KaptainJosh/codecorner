@@ -11,7 +11,9 @@ function Wall() {
     
     return <div className="container">
         <h1>Wall</h1>
-        <Link to="/login">Logout</Link>  
+        <Link to="/login">Logout</Link> 
+        <br />
+        <Link to="/makePost">Make Post</Link> 
     </div>
 }
 

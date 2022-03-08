@@ -7,6 +7,7 @@ import Registration from "./components/Registration";
 import {BrowserRouter as Router, Route, Routes, Link} from "react-router-dom"
 import Login from "./components/Login";
 import Wall from "./components/Wall";
+import MakePost from "./components/MakePost";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/wall" element={<Wall/>}/>
+        <Route path="/makePost" element={<MakePost/>} />
       </Routes>
     </Router>
   )
