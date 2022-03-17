@@ -10,8 +10,6 @@ function MakePost() {
     const navigate = useNavigate();
     let tags = [];
     $(document).ready(() => {
-        
-    
         updatePostPreview();
     
         $("#submitButton").click(() => {
@@ -60,16 +58,16 @@ function MakePost() {
         });
     
         $(".tagToAdd").click(function() {
-            tags.push(this.innerText);
-            this.parentNode.removeChild(this);
+            tags.push(this.parentNode.innerText);
+            this.parentNode.parentNode.removeChild(this.parentNode);
             updatePostPreview();
         });
-    
-        $(".addedTag").click(function() {
-            tags.splice(tags.indexOf(this), 1);
-            this.parentNode.removeChild(this);
-            updatePostPreview();
+        $(".tagToAdd").mouseover(function() {
+           this.style = "background-color: green;"; 
         });
+        $(".tagToAdd").mouseout(function() {
+            this.style = "";
+         });
     });
     
     function updatePostPreview()
@@ -146,7 +144,7 @@ function MakePost() {
     
         let tagPreview = "<ul>";
         for (let tag of tags) {
-            tagPreview += `<li class="addedTag">` + tag + "</li>";
+            tagPreview += `<li> <button class="addedTag">` + tag + "</button></li>";
         }
         tagPreview += "</ul>";
         $("#tagPreview").html(tagPreview);
@@ -155,18 +153,42 @@ function MakePost() {
             tags.splice(tags.indexOf(this.innerHTML), 1);
             this.parentNode.removeChild(this);
     
-            let newListElement = document.createElement("li");
-            newListElement.innerHTML = this.innerHTML;
-            newListElement.setAttribute("class", "tagToAdd");
+            let buttonElement = document.createElement("button");
+            buttonElement.innerHTML = this.innerHTML;
+            buttonElement.setAttribute("class", "tagToAdd");
             
-            newListElement.onclick = function() {
+            buttonElement.onclick = function() {
                 tags.push(this.innerText);
-                this.parentNode.removeChild(this);
+                this.parentNode.parentNode.removeChild(this.parentNode);
                 updatePostPreview();
             };
+            buttonElement.mouseover = function() {
+                this.style = "background-color: green;"; 
+            }
+            buttonElement.mouseout = function() {
+                this.style = "";
+            }
+
+            let newListElement = document.createElement("li");
+            newListElement.append(buttonElement);
+
             $("#tagSelection").append(newListElement);
+
+            $(".tagToAdd").mouseover(function() {
+                this.style = "background-color: green;"; 
+             });
+             $(".tagToAdd").mouseout(function() {
+                 this.style = "";
+              });
     
             updatePostPreview();
+        });
+
+        $(".addedTag").mouseover(function() {
+            this.style = "background-color: red;";
+        });
+        $(".addedTag").mouseout(function() {
+            this.style = "";
         });
     }
     
@@ -195,12 +217,12 @@ function MakePost() {
         <br />
 
         <ul id="tagSelection">
-            <li className="tagToAdd">JavaScript</li>
-            <li className="tagToAdd">C++</li>
-            <li className="tagToAdd">Web Dev</li>
-            <li className="tagToAdd">Embedded Systems</li>
-            <li className="tagToAdd">Computer Graphics</li>
-            <li className="tagToAdd">C#</li>
+            <li> <button className="tagToAdd">JavaScript</button></li>
+            <li> <button className="tagToAdd">C++</button></li>
+            <li> <button className="tagToAdd">Web Dev</button></li>
+            <li> <button className="tagToAdd">Embedded Systems</button></li>
+            <li> <button className="tagToAdd">Computer Graphics</button></li>
+            <li> <button className="tagToAdd">C#</button></li>
         </ul>
 
         <button id="codeButton">Highlight Code Snippet</button>
