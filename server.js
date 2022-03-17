@@ -39,7 +39,7 @@ MongoClient.connect(url, (err, client) => {
 	db = client.db("CodeCorner");
     console.log(`Express server is running on port ${port}`)
 
-	app.listen(process.env.PORT || 8080, () => {
+	app.listen(process.env.PORT || 3001, () => {
 
 	});
 });
