@@ -44,7 +44,6 @@ MongoClient.connect(url, (err, client) => {
 	});
 });
 
-
 //require route
 app.use("/", require("./routes/registrationRoute"));
 app.use("/", require("./routes/loginRoute"));
@@ -52,7 +51,11 @@ app.get('/makePost', (req, res) => {
 	res.sendFile(__dirname + '/public/makePostPrototype.html');
 });
 app.post('/submitPost', (req, res) => {	
-	db.collection('posts').insertOne(req.body);
+	try {
+		db.collection('posts').insertOne(req.body);
+	} catch (e) {
+		console.log(e);
+	}
 });
 
 if (process.env.NODE_ENV === 'production')
