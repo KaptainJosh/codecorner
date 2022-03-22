@@ -58,6 +58,11 @@ app.post('/submitPost', (req, res) => {
 	}
 });
 
+app.get('/getPosts', async (req, res) => {
+	let posts = await db.collection('posts').find({}, {}).toArray();
+	res.send(posts);
+});
+
 if (process.env.NODE_ENV === 'production')
 {
     app.use(express.static("client/build"));
