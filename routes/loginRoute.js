@@ -23,8 +23,29 @@ router.route("/login").post((req, res) => {
                 return res.json({message: "Invalid Login"});
                 
             }
+            // console.log("Password" + password);
+            // console.log("User.password" + user.passwordHash);
+            // let mes = "";
+            // bcrypt.compare(password, user.passwordHash, (err, res) => {
+            //     if (res) 
+            //     {
+            //         mes = 'User Authenticated';
+                    
+            //     }
+            //     console.log(res);
+            // })
+            // console.log(mes);
+            // if (mes === "User Authenticated")
+            // {
+            //     return res.json({message: 'User Authenticated'});
+            // }
 
-            const isPasswordValid = bcrypt.compare(password, user.password)
+            // else
+            // {
+            //     return res.json({message: "Invalid Login"});
+            // }
+            
+            const isPasswordValid = bcrypt.compare(password, user.passwordHash)
 
             if (isPasswordValid)
             {
