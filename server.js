@@ -11,6 +11,7 @@ const User = require("./models/userModel");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const path = require("path");
+const { ObjectId } = require("mongodb");
 
 // app.use(cors());
 app.use(express.json());
@@ -69,6 +70,14 @@ app.get('/getPosts', async (req, res) => {
 app.get('/getNumPosts', async (req, res) => {
 	let posts = await db.collection('posts').find({}, {}).toArray();
 	res.send(JSON.stringify({"length": posts.length}));
+});
+
+app.get('/getSpecificPost/*', async (req, res) => {
+	const postId = req.path.split('/')[2];
+	const objectId = new ObjectId(postId);
+
+	let posts = await db.collection('posts').find({ _id: objectId }, {}).toArray();
+	res.send(posts);
 });
 
 if (process.env.NODE_ENV === 'production')

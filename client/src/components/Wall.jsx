@@ -4,13 +4,15 @@
 */
 
 import React from "react";
-import { Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
 
 // Registration Component
 function Wall() {
     let page = 0;
     let totalNumPosts;
+
+    const navigate = useNavigate();
 
     $(document).ready(() => {
         getNumPosts();
@@ -47,6 +49,21 @@ function Wall() {
             //Display user, time, and content
             postElement.innerHTML = `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
             
+            //Add link to specific post
+            let postId = post["_id"];
+            postElement.onclick = function() {
+                navigate(`/posts/${postId}`);
+            };
+
+            //Change color on hover to indicate that post is clickable
+            postElement.onmouseover = function() {
+                this.style = "background-color: #D3D3D3; cursor: pointer; border: 1px solid black; margin: 10px; padding: 5px;";
+            };
+
+            postElement.onmouseout = function() {
+                this.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+            };
+
             //Display tags, if there are any
             if ("tags" in post && post["tags"].length > 0) {
                 postElement.innerHTML += "<hr>Tags: ";
@@ -124,9 +141,8 @@ function Wall() {
         <div className="container" id="posts">
         </div>
 
-        <button onClick={loadPreviousPage} id="prevPageButton">Previous Page</button>
-
-        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right"}}>Next Page</button>
+        <button onClick={loadPreviousPage} id="prevPageButton" style={{float: "left", fontSize: "20px", margin: "5px"}}>Previous Page</button>
+        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right", fontSize: "20px", margin: "5px"}}>Next Page</button>
     </div>
 }
 
