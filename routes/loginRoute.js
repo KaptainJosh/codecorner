@@ -14,7 +14,7 @@ router.route("/login").post((req, res) => {
     try 
     {   
         const username = req.body.username;
-        const password = req.body.password;
+        const enteredPassword = req.body.password;
 
         User.findOne({username: username}).then(user => {
             
@@ -45,7 +45,7 @@ router.route("/login").post((req, res) => {
             //     return res.json({message: "Invalid Login"});
             // }
             
-            const isPasswordValid = bcrypt.compare(password, user.passwordHash)
+            const isPasswordValid = bcrypt.compare(enteredPassword, user.passwordHash)
 
             if (isPasswordValid)
             {

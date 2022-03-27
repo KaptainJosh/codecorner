@@ -17,18 +17,20 @@ function Wall() {
                 'Accept': 'application/json'
             },
             }).then(res => {
-                res.json().then(posts => {
-                    for (let post of posts) {
-                        let postElement = document.createElement("div");
-                        postElement.style = "border: 1px solid black; margin: 10px; padding: 5px;";
-                        postElement.innerHTML = `<p>User: ${post["user"]}<hr>${post["content"]}<br/></p>`;
-
-                        document.getElementById('posts').appendChild(postElement);
-                    }
-                });
+                res.json().then(posts => displayPosts(posts));
             }
         );
     });
+
+    function displayPosts(posts) {
+        for (let post of posts) {
+            let postElement = document.createElement("div");
+            postElement.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+            postElement.innerHTML = `<p>User: ${post["user"]}<hr>${post["content"]}<br/></p>`;
+
+            document.getElementById('posts').appendChild(postElement);
+        }
+    }
     
     return <div className="container">
         <h1>Wall</h1>

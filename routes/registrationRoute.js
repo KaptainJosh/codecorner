@@ -17,28 +17,20 @@ router.route("/registration").post((req, res) => {
         const password = req.body.password;
 
         User.findOne({username: username}).then(user => {
-            if (user){
-                
+            if (user) {
                 return res.json({message: "Username already taken"});
-                
             }
 
-            else 
-            {
-                const passwordHash = bcrypt.hashSync(password, 10);
+            const passwordHash = bcrypt.hashSync(password, 10);
 
-                const newUser = new User({
-                    username,
-                    passwordHash
-                });
+            const newUser = new User({
+                username,
+                passwordHash
+            });
 
-                res.json({username, passwordHash});
-
-                newUser.save();
-            }
+            res.json({username, passwordHash});
+            newUser.save();
         });
-
-        
     }
     catch (error)
     {
