@@ -1,6 +1,7 @@
 import React from "react";
 import { Link} from "react-router-dom";
 import $ from "jquery";
+const hljs = require("highlight.js")
 
 function Post() {
 	$(document).ready(() => {
@@ -37,6 +38,8 @@ function Post() {
 			}
 			postElement.innerHTML = postElement.innerHTML.slice(0, -2); //Remove trailing comma and space
 		}
+
+		hljs.highlightAll();
 	}
 
 	//Code inspired by https://stackoverflow.com/questions/44060804/convert-epoch-time-to-human-readable-with-specific-timezone

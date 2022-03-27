@@ -6,6 +6,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
+const hljs = require("highlight.js")
 
 // Registration Component
 function Wall() {
@@ -41,7 +42,9 @@ function Wall() {
     function displayPosts(posts) {
         for (let post of posts) {
             let postElement = document.createElement("div");
-            postElement.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+
+            const baseStyle = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #edf0ee;"
+            postElement.style = baseStyle;
 
             let timestamp = parseInt(post["time"]);
             let timeString = getLocalTimeString(timestamp);
@@ -57,11 +60,11 @@ function Wall() {
 
             //Change color on hover to indicate that post is clickable
             postElement.onmouseover = function() {
-                this.style = "background-color: #D3D3D3; cursor: pointer; border: 1px solid black; margin: 10px; padding: 5px;";
+                this.style = baseStyle + "background-color: #D3D3D3; cursor: pointer; ";
             };
 
             postElement.onmouseout = function() {
-                this.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+                this.style = baseStyle;
             };
 
             //Display tags, if there are any
@@ -75,6 +78,8 @@ function Wall() {
 
             document.getElementById('posts').appendChild(postElement);
         }
+
+        hljs.highlightAll();
     }
 
     //This function retrieves the total number of posts
