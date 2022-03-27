@@ -59,8 +59,16 @@ app.post('/submitPost', (req, res) => {
 });
 
 app.get('/getPosts', async (req, res) => {
-	let posts = await db.collection('posts').find({}, {}).toArray();
+	const postsPerPage = 10;
+	const postOffset = req.query.page * postsPerPage;
+
+	let posts = await db.collection('posts').find({}, { sort: { time: -1 }, limit: 10, skip: postOffset}).toArray();
 	res.send(posts);
+});
+
+app.get('/getNumPosts', async (req, res) => {
+	let posts = await db.collection('posts').find({}, {}).toArray();
+	res.send(JSON.stringify({"length": posts.length}));
 });
 
 if (process.env.NODE_ENV === 'production')

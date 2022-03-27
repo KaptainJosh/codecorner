@@ -9,8 +9,22 @@ import $ from "jquery";
 
 // Registration Component
 function Wall() {
+    let page = 0;
+    let totalNumPosts;
+
     $(document).ready(() => {
-        fetch("/getPosts", {
+        getNumPosts();
+        getPosts();
+
+        document.getElementById("prevPageButton").disabled = true;
+    });
+
+    function getPosts() {
+        //Remove posts that are already displayed
+        document.getElementById('posts').innerHTML = "";
+
+        //Query and display posts
+        fetch("/getPosts?page="+page, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -20,15 +34,84 @@ function Wall() {
                 res.json().then(posts => displayPosts(posts));
             }
         );
-    });
+    }
 
     function displayPosts(posts) {
         for (let post of posts) {
             let postElement = document.createElement("div");
             postElement.style = "border: 1px solid black; margin: 10px; padding: 5px;";
-            postElement.innerHTML = `<p>User: ${post["user"]}<hr>${post["content"]}<br/></p>`;
+
+            let timestamp = parseInt(post["time"]);
+            let timeString = getLocalTimeString(timestamp);
+
+            //Display user, time, and content
+            postElement.innerHTML = `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
+            
+            //Display tags, if there are any
+            if ("tags" in post && post["tags"].length > 0) {
+                postElement.innerHTML += "<hr>Tags: ";
+                for (let tag of post["tags"]) {
+                    postElement.innerHTML += tag + ", ";
+                }
+                postElement.innerHTML = postElement.innerHTML.slice(0, -2); //Remove trailing comma and space
+            }
 
             document.getElementById('posts').appendChild(postElement);
+        }
+    }
+
+    //This function retrieves the total number of posts
+    //It is needed to ensure the user can't navigate to more pages 
+    //Than there are poosts
+    function getNumPosts() {
+        fetch("/getNumPosts", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }).then(res => {
+            res.json().then(tmp => totalNumPosts = tmp.length);
+        });
+    }
+
+    //Code inspired by https://stackoverflow.com/questions/44060804/convert-epoch-time-to-human-readable-with-specific-timezone
+    function getLocalTimeString(timestamp) {
+        let date = new Date(timestamp * 1000);
+        let utc = date.getTime() + (date.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
+
+        //Convert to user's local time zone
+        const localOffset = new Date().getTimezoneOffset() / -60;
+        let adjustedDate = new Date(utc + 3600000*localOffset);
+        return adjustedDate.toLocaleString();
+    }
+
+    function loadNextPage() {
+        const postsPerPage = 10;
+        const totalPages = Math.ceil(totalNumPosts / postsPerPage);
+
+        if (page + 1 < totalPages) {
+            page++;
+            getPosts();
+
+            document.getElementById("prevPageButton").disabled = false;
+
+            if (page === totalPages - 1) {
+                document.getElementById("nextPageButton").disabled = true;
+            }
+        }
+    }
+
+    function loadPreviousPage() {
+        if (page - 1 >= 0) {
+            page--;
+            getPosts();
+
+            document.getElementById("nextPageButton").disabled = false;
+
+            if (page === 0) {
+                document.getElementById("prevPageButton").disabled = true;
+            }
         }
     }
     
@@ -40,6 +123,10 @@ function Wall() {
 
         <div className="container" id="posts">
         </div>
+
+        <button onClick={loadPreviousPage} id="prevPageButton">Previous Page</button>
+
+        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right"}}>Next Page</button>
     </div>
 }
 

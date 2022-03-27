@@ -206,11 +206,9 @@ function MakePost() {
     }
 
     function getUTCTimestampSeconds() {
-        //Epoch timestamp code based on https://futurestud.io/tutorials/get-number-of-seconds-since-epoch-in-javascript 
+        //Simplified code based on https://stackoverflow.com/questions/9756120/how-do-i-get-a-utc-timestamp-in-javascript 
         const currentTime = new Date();
-        const utcMilllisecondsSinceEpoch = currentTime.getTime() + (currentTime.getTimezoneOffset() * 60 * 1000);
-        const utcSecondsSinceEpoch = Math.round(utcMilllisecondsSinceEpoch / 1000);
-        return utcSecondsSinceEpoch;
+        return Math.floor(currentTime.getTime() / 1000);
     }
 
     return <div className="container">
