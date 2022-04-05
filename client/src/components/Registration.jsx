@@ -46,6 +46,11 @@ function Registration() {
                 {
                     alert(res.data.message);
                 }   
+
+                else if (res.data.message === "Failed to Create User")
+                {
+                    alert(res.data.message);
+                }
                 
                 else
                 {

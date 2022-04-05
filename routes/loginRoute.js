@@ -7,9 +7,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
+//const session = require("express-session");
 
-router.route("/login").post((req, res) => {
+router.route("/").post((req, res) => {
 
     try 
     {   
@@ -23,43 +24,73 @@ router.route("/login").post((req, res) => {
                 return res.json({message: "Invalid Login"});
                 
             }
-            // console.log("Password" + password);
-            // console.log("User.password" + user.passwordHash);
-            // let mes = "";
-            // bcrypt.compare(password, user.passwordHash, (err, res) => {
-            //     if (res) 
-            //     {
-            //         mes = 'User Authenticated';
-                    
-            //     }
-            //     console.log(res);
-            // })
-            // console.log(mes);
-            // if (mes === "User Authenticated")
-            // {
-            //     return res.json({message: 'User Authenticated'});
-            // }
+            
+            const comparePassword = async (password, hash) => {
+                try {
+                    return await bcrypt.compare(password, hash);
+                } catch (error) {
+                    console.log(error);
+                }
+
+                return false;
+            }
+
+            (async () => {
+                const passwordHash = user.passwordHash;
+
+                const isValidPass = await comparePassword(password, passwordHash);
+
+                if (isValidPass)
+                {
+                    req.session.autheticated = true;
+                    req.session.user = {
+                        username,
+                        password
+                    }
+                    // const token = jwt.sign(
+                    //     {
+                    //         username: user.username
+                    //     },
+                    //     'secret123',
+                    //     {expiresIn: "1h"}
+                    // )
+
+                    // return res.json({message: 'User Authenticated', token: token, expiresIn: 3600, username: user.username})
+                    console.log(req.session);
+                    return res.json({message: 'User Authenticated'});
+                }
+
+                else
+                {
+                    return res.json({message: "Invalid Login"});
+                }
+            })();
+            
 
             // else
             // {
-            //     return res.json({message: "Invalid Login"});
+            //     console.log(password)
+            //     const isPasswordValid = bcrypt.compare(password, user.passwordHash)
+            //     console.log(isPasswordValid);
+            //     if (isPasswordValid)
+            //     {
+            //         const token = jwt.sign(
+            //             {
+            //                 username: user.username
+            //             },
+            //             'secret123',
+            //             {expiresIn: "1h"}
+            //         )
+
+            //         // return res.json({message: 'User Authenticated', token: token, expiresIn: 3600, username: user.username})
+            //         return res.json({message: 'User Authenticated', user: token, valid: isPasswordValid});
+            //     }
+
+            //     else
+            //     {
+            //         return res.json({message: "Invalid Login"});
+            //     }
             // }
-            
-            const isPasswordValid = bcrypt.compare(password, user.passwordHash)
-
-            if (isPasswordValid)
-            {
-                // const token = jwt.sign(
-                //     {
-                //         username: user.username
-                //     },
-                //     'secret123',
-                //     {expiresIn: "1h"}
-                // )
-
-                // return res.json({message: 'User Authenticated', token: token, expiresIn: 3600, username: user.username})
-                return res.json({message: 'User Authenticated'});
-            }
         });
 
         

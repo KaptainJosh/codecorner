@@ -41,7 +41,7 @@ function Login() {
 
         if (newUser.username && newUser.password)
         {
-            axios.post('/login', newUser).then(res=> {
+            axios.post('/login', newUser, {withCredentials: true}).then(res=> {
                 if (res.data.message === 'Invalid Login')
                 {
                     alert(res.data.message);
@@ -49,6 +49,10 @@ function Login() {
                 
                 else
                 {
+                    console.log(res);
+                    //const token = res.data.user; 
+                    //localStorage.setItem("token", token);
+                    //console.log(localStorage.token);
                     alert("Logged In");
                     navigate("/wall");
                 }

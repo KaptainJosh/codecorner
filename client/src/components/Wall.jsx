@@ -4,11 +4,29 @@
 */
 
 import React from "react";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import $ from "jquery";
+import axios from "axios";
+
+
 
 // Registration Component
 function Wall() {
+    const navigate = useNavigate();
+
+    function handleClick(event) {
+        event.preventDefault();
+        axios.post('/logout',).then(res=> {
+            if (res.data.message === 'User Logged Out')
+            {
+                alert(res.data.message);
+            }
+    
+            navigate("/login");
+        
+        });
+    }
+
     $(document).ready(() => {
         fetch("/getPosts", {
             method: "GET",
@@ -32,7 +50,7 @@ function Wall() {
     
     return <div className="container">
         <h1>Wall</h1>
-        <Link to="/login">Logout</Link> 
+        <Link to="/login" onClick={handleClick}>Logout</Link> 
         <br />
         <Link to="/makePost">Make Post</Link> 
 

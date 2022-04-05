@@ -8,7 +8,7 @@ const router = express.Router();
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
 
-router.route("/registration").post((req, res) => {
+router.route("/").post((req, res) => {
 
     try 
     {   
@@ -25,16 +25,38 @@ router.route("/registration").post((req, res) => {
 
             else 
             {
-                const passwordHash = bcrypt.hashSync(password, 10);
+                const hashPassword = async (password, saltRounds = 10) => {
+                    try {
+                        salt = await bcrypt.genSalt(saltRounds);
 
-                const newUser = new User({
-                    username,
-                    passwordHash
-                });
+                        return await bcrypt.hash(password, salt);
+                    } catch (err) {
+                        console.log(error);
+                    }
 
-                res.json({username, passwordHash});
+                    return null;
+                }
+                //bcrypt.hashSync(password, 10);
 
-                newUser.save();
+                (async () => {
+                    const passwordHash = await hashPassword(password);
+
+                    if (passwordHash === null)
+                    {
+                        res.json({message: "Failed to Create User"});
+                    }
+                    
+                    const newUser = new User({
+                        username,
+                        passwordHash
+                    });
+
+                    res.json({username, passwordHash});
+
+                    newUser.save();
+                })();
+
+                
             }
         });
 
