@@ -17,10 +17,8 @@ router.route("/").post((req, res) => {
         const password = req.body.password;
 
         User.findOne({username: username}).then(user => {
-            if (user){
-                
+            if (user) {
                 return res.json({message: "Username already taken"});
-                
             }
 
             else 
@@ -59,8 +57,6 @@ router.route("/").post((req, res) => {
                 
             }
         });
-
-        
     }
     catch (error)
     {

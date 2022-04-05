@@ -15,14 +15,11 @@ function MakePost() {
         $("#submitButton").click(() => {
             console.log($("#postTextarea").val());
     
-            //Epoch timestamp code based on https://futurestud.io/tutorials/get-number-of-seconds-since-epoch-in-javascript 
-            const currentTime = new Date();
-            const utcMilllisecondsSinceEpoch = currentTime.getTime() + (currentTime.getTimezoneOffset() * 60 * 1000);
-            const utcSecondsSinceEpoch = Math.round(utcMilllisecondsSinceEpoch / 1000);
+            const timestamp = getUTCTimestampSeconds();
     
             const postData = {
                 user: "Prototype",
-                time: utcSecondsSinceEpoch,
+                time: timestamp,
                 content: $("#postTextarea").val(),
                 tags: tags
             };
@@ -37,7 +34,6 @@ function MakePost() {
                 }).then(res => console.log("Post submitted!")
             );
     
-            // window.location.reload();
             navigate("/wall");
         });
     
@@ -207,6 +203,12 @@ function MakePost() {
         // do something with the selected content
     
         return sel;
+    }
+
+    function getUTCTimestampSeconds() {
+        //Simplified code based on https://stackoverflow.com/questions/9756120/how-do-i-get-a-utc-timestamp-in-javascript 
+        const currentTime = new Date();
+        return Math.floor(currentTime.getTime() / 1000);
     }
 
     return <div className="container">

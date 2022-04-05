@@ -15,7 +15,7 @@ router.route("/").post((req, res) => {
     try 
     {   
         const username = req.body.username;
-        const password = req.body.password;
+        const enteredPassword = req.body.password;
 
         User.findOne({username: username}).then(user => {
             
@@ -81,6 +81,10 @@ router.route("/").post((req, res) => {
             //             'secret123',
             //             {expiresIn: "1h"}
             //         )
+            //     return res.json({message: "Invalid Login"});
+            // }
+            
+            const isPasswordValid = bcrypt.compare(enteredPassword, user.passwordHash)
 
             //         // return res.json({message: 'User Authenticated', token: token, expiresIn: 3600, username: user.username})
             //         return res.json({message: 'User Authenticated', user: token, valid: isPasswordValid});
