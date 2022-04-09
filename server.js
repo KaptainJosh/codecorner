@@ -5,20 +5,17 @@
 
 const express = require("express");
 const app = express();
-// const cors = require("cors");
 const mongoose = require('mongoose');
-//const User = require("./models/userModel");
 require("dotenv").config();
 const session = require("express-session");
 const passport = require("passport");
-//const localStrategy = require("passport-local").Strategy;
 const methodOverride = require("method-override");
 const MongoStore = require("connect-mongo");
 const authenticateUser = require("./passportConfig");
 const path = require("path");
 const { ObjectId } = require("mongodb");
+const { rmSync } = require("fs");
 
-// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -50,8 +47,6 @@ MongoClient.connect(url, (err, client) => {
 	});
 });
 
-
-
 authenticateUser(passport);
 
 app.use(express.json());
@@ -71,10 +66,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
 
-// app.use(cors());
-
-
-
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -90,6 +81,42 @@ app.post("/login", passport.authenticate('local', {
 	failureRedirect: '/loginFail'
 }));
 
+app.post("/likes", (req, res) => {
+
+	//console.log(req.body.id);
+	//console.log(req.user);
+	const objectId = new ObjectId(req.body.id);
+	const username = req.user.username;
+	//const userId = req.user.id;
+	
+	db.collection('posts').find({_id: objectId}).toArray().then((post => {
+		let usersLiked = post[0].usersLiked; // object that holds the list of users who have liked the post
+		
+		if (usersLiked[username] !== true)
+		{
+			usersLiked[username] = true; 
+			
+			db.collection('posts').updateOne({_id: objectId}, {$set: {usersLiked: usersLiked}}, (err, result) => {
+				if (err) throw err;
+				console.log("Finished Updating usersLiked");
+			})
+
+			db.collection('posts').updateOne({_id: objectId}, {$set: {numLikes: req.body.numLikes}}, (err, result) => {
+				if (err) throw err;
+				console.log("Finished updating numLikes");
+			})
+
+			res.json({message: "Post Liked"})
+		}
+
+		else
+		{
+			res.json({message: "Already Liked"});
+		}
+		
+	}));
+})
+
 app.get("/wall", (req, res) => {
 	//console.log(req.user);
 	res.json({message: "User Authenticated"})
@@ -98,11 +125,13 @@ app.get("/wall", (req, res) => {
 app.get("/loginFail", (req, res) => {
 	res.json({message: "Invalid Login"})
 })
-//app.use("/login", require("./routes/loginRoute"));
+
 app.get('/makePost', (req, res) => {
 	res.sendFile(__dirname + '/public/makePostPrototype.html');
 });
 app.post('/submitPost', (req, res) => {	
+	const post = req.body;
+	post['user'] = req.user.username; // adds user's name to the post
 	try {
 		db.collection('posts').insertOne(req.body);
 	} catch (e) {

@@ -1,9 +1,12 @@
 import React from "react";
 import { Link} from "react-router-dom";
 import $ from "jquery";
+import axios from "axios";
 const hljs = require("highlight.js")
 
 function Post() {
+	var thePost = null;
+	var numLikes;
 	$(document).ready(() => {
 		//Get post ID since path is of form /posts/ID
 		const postId = window.location.pathname.split('/')[2];
@@ -15,10 +18,36 @@ function Post() {
                 'Accept': 'application/json'
             },
             }).then(res => {
-                res.json().then(post => displayPost(post[0]));
+                res.json().then(post => {
+					const thePost = post[0];
+					let numLikes = thePost['numLikes']
+					displayPost(post[0]);
+					displayLikes(numLikes)
+				});
             }
         );
 	});
+	
+	function handleClick() {
+		
+		console.log(thePost["user"]);
+		//console.log(numLikes);
+		numLikes++;
+		const id = thePost["_id"];
+		const data = {id: id, numLikes: numLikes};
+		//console.log(data);
+		axios.post('/likes', data).then((res) => {
+			//console.log(res);
+			window.location.reload(false);
+		})
+	}
+
+	function displayLikes(numLikes)
+	{
+		let likeElement = document.getElementById("likes");
+
+		likeElement.innerHTML = `Likes ${numLikes}`;
+	}
 
 	function displayPost(post) {
 		let postElement = document.getElementById("post");
@@ -61,6 +90,10 @@ function Post() {
 		<Link to="/wall">Return to Wall</Link>
 
 		<div id="post"></div>
+
+		<br />
+
+		<button onClick={handleClick} id="likes"></button>
     </div>
 }
 
