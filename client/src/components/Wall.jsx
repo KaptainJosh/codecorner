@@ -49,11 +49,14 @@ function Wall() {
             let timestamp = parseInt(post["time"]);
             let timeString = getLocalTimeString(timestamp);
 
+            let postId = post["_id"];
+
             //Display user, time, and content
-            postElement.innerHTML = `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
+            //Also include a hidden link to the post, for accessibility
+            postElement.innerHTML = `<a href="/posts/${postId}" style="display: none">Navigate to post by ${post["user"]}</a>`
+            postElement.innerHTML += `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
             
             //Add link to specific post
-            let postId = post["_id"];
             postElement.onclick = function() {
                 navigate(`/posts/${postId}`);
             };
