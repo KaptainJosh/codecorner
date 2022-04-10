@@ -19,8 +19,8 @@ function Post() {
             },
             }).then(res => {
                 res.json().then(post => {
-					const thePost = post[0];
-					let numLikes = thePost['numLikes']
+					thePost = post[0];
+					numLikes = thePost['numLikes']
 					displayPost(post[0]);
 					displayLikes(numLikes)
 				});
@@ -30,15 +30,22 @@ function Post() {
 	
 	function handleClick() {
 		
-		console.log(thePost["user"]);
-		//console.log(numLikes);
 		numLikes++;
 		const id = thePost["_id"];
 		const data = {id: id, numLikes: numLikes};
-		//console.log(data);
+		
 		axios.post('/likes', data).then((res) => {
-			//console.log(res);
-			window.location.reload(false);
+
+			if(res.data.message === "Already Liked")
+			{
+				alert("You Have Already Liked This Post");
+			}
+			
+			else
+			{
+				window.location.reload(false);
+			}
+			
 		})
 	}
 

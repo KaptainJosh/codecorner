@@ -30,6 +30,23 @@ function Wall() {
     let page = 0;
     let totalNumPosts;
 
+    function handleTag(tag)
+    {
+        page = 0;
+        getNumFilteredPosts(tag);
+        getFilteredPosts(tag);
+
+        document.getElementById("prevPageButton").disabled = true;
+    }
+
+    function resetFilter() 
+    {
+        getNumPosts();
+        getPosts();
+
+        document.getElementById("prevPageButton").disabled = true;
+    }
+
     $(document).ready(() => {
         getNumPosts();
         getPosts();
@@ -43,6 +60,23 @@ function Wall() {
 
         //Query and display posts
         fetch("/getPosts?page="+page, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            }).then(res => {
+                res.json().then(posts => displayPosts(posts));
+            }
+        );
+    }
+
+    function getFilteredPosts(tag)
+    {
+        //Remove posts that are already displayed
+        document.getElementById('posts').innerHTML = "";
+        
+        fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -112,6 +146,19 @@ function Wall() {
         });
     }
 
+    function getNumFilteredPosts(tag) 
+    {
+        fetch(`/getNumFilteredPosts/${tag}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }).then(res => {
+            res.json().then(tmp => totalNumPosts = tmp.length);
+        });
+    }
+
     //Code inspired by https://stackoverflow.com/questions/44060804/convert-epoch-time-to-human-readable-with-specific-timezone
     function getLocalTimeString(timestamp) {
         let date = new Date(timestamp * 1000);
@@ -157,6 +204,15 @@ function Wall() {
         <Link to="/login" onClick={handleClick}>Logout</Link> 
         <br />
         <Link to="/makePost">Make Post</Link> 
+        <br />
+        <h3>Tags</h3>
+        <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>Javascript</button>
+        <button value="C%2B%2B" onClick={(e) => handleTag(e.target.value)}>C++</button>
+        <button value="Web Dev" onClick={(e) => handleTag(e.target.value)}>Web Dev</button>
+        <button value="Embedded Systems" onClick={(e) => handleTag(e.target.value)}>Embedded Systems</button>
+        <button value="Computer Graphics" onClick={(e) => handleTag(e.target.value)}>Computer Graphics</button>
+        <button value="C%23" onClick={(e) => handleTag(e.target.value)}>C#</button>
+        <button onClick={resetFilter}>Reset Filter</button>
 
         <div className="container" id="posts">
         </div>

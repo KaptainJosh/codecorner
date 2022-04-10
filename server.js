@@ -147,6 +147,16 @@ app.get('/getPosts', async (req, res) => {
 	res.send(posts);
 });
 
+app.get('/getFilteredPosts', async(req, res) => {
+	const postsPerPage = 10;
+	const postOffset = req.query.page * postsPerPage;
+	const tag = req.query.tag;
+	
+	let posts = await db.collection('posts').find({tags: tag}, { sort: { time: -1 }, limit: 10, skip: postOffset}).toArray();
+	
+	res.send(posts);
+})
+
 app.get('/getNumPosts', async (req, res) => {
 	let posts = await db.collection('posts').find({}, {}).toArray();
 	res.send(JSON.stringify({"length": posts.length}));
@@ -159,6 +169,14 @@ app.get('/getSpecificPost/*', async (req, res) => {
 	let posts = await db.collection('posts').find({ _id: objectId }, {}).toArray();
 	res.send(posts);
 });
+
+app.get('/getNumFilteredPosts/:tag', async (req, res) => {
+	let tag = req.params.tag;
+	
+	let posts = await db.collection('posts').find({tags: tag}, {}).toArray();
+	
+	res.send(JSON.stringify({"length": posts.length}));
+})
 
 app.post("/logout", (req, res) => {
 	//console.log(req.user);
