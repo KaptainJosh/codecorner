@@ -6,11 +6,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
+import Cookies from 'js-cookie'
 const hljs = require("highlight.js")
 
 // Registration Component
 function Wall() {
     let page = 0;
+    if (Cookies.get('page')) {
+        page = Cookies.get('page');
+    }
+    Cookies.set('page', 0);
+    
     let totalNumPosts;
 
     const navigate = useNavigate();
@@ -19,7 +25,16 @@ function Wall() {
         getNumPosts();
         getPosts();
 
-        document.getElementById("prevPageButton").disabled = true;
+        const postsPerPage = 10;
+        const totalPages = Math.ceil(totalNumPosts / postsPerPage);
+
+        if (page === 0) {
+            document.getElementById("prevPageButton").disabled = true;
+        }
+        
+        if (page === totalPages - 1) {
+            document.getElementById("nextPageButton").disabled = true;
+        }
     });
 
     function getPosts() {
@@ -58,6 +73,7 @@ function Wall() {
             
             //Add link to specific post
             postElement.onclick = function() {
+                Cookies.set('page', page);
                 navigate(`/posts/${postId}`);
             };
 
@@ -138,6 +154,10 @@ function Wall() {
                 document.getElementById("prevPageButton").disabled = true;
             }
         }
+    }
+
+    function savePage() {
+        Cookies.set('page', page);
     }
     
     return <div className="container">
