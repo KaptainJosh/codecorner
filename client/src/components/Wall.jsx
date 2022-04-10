@@ -155,10 +155,6 @@ function Wall() {
             }
         }
     }
-
-    function savePage() {
-        Cookies.set('page', page);
-    }
     
     return <div className="container">
         <h1>Wall</h1>

@@ -21,7 +21,8 @@ function MakePost() {
                 user: "Prototype",
                 time: timestamp,
                 content: $("#postTextarea").val(),
-                tags: tags
+                tags: tags,
+                comments: []
             };
     
             fetch("/submitPost", {
