@@ -7,6 +7,9 @@ const hljs = require("highlight.js")
 function Post() {
 	const navigate = useNavigate();
 	$(document).ready(() => {
+		//Add background color
+        document.body.style = "background: #c7c7c7";
+
 		//Get post ID since path is of form /posts/ID
 		const postId = window.location.pathname.split('/')[2];
 
@@ -56,7 +59,7 @@ function Post() {
 
 	function displayPost(post) {
 		let postElement = document.getElementById("post");
-		postElement.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+		postElement.style = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #d9d9d9;"
 
 		let timestamp = parseInt(post["time"]);
 		let timeString = getLocalTimeString(timestamp);
@@ -95,7 +98,7 @@ function Post() {
 		let timeString = getLocalTimeString(timestamp);
 
 		let newComment = document.createElement('div');
-		newComment.style = "border: 1px solid black; margin: 10px; padding: 5px;";
+		newComment.style = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #d9d9d9;"
 		newComment.innerHTML = `<p><b style="font-size: 16px;">${comment["user"]}</b><br/>${timeString}<hr>${comment["content"]}<br/></p>`;
 
 		return newComment;
@@ -119,24 +122,32 @@ function Post() {
     }
 
 	return <div className="container">
-        <h1>Specific Post</h1>
-        <Link to="/login">Logout</Link> 
-        <br />
+		{/* CodeCorner Logo*/}
+        <img src="/assets/images/CodeCornerLogo.png" alt="Logo"/> 
 
-		<Link to="/wall">Return to Wall</Link>
+		<br />
+		<br />
+        
+        <button onClick={() => navigate("/login")} style={{float: "right", fontSize: "20px", marginBottom: "15px", backgroundColor: "#0a66c2", color: "white", display: "inline-block", width: "auto", height: "auto", border: "1px solid black", borderRadius: "5px"}}>Logout</button> 
+        <button onClick={() => navigate("/wall")} style={{float: "left", fontSize: "20px", marginBottom: "15px", backgroundColor: "#0a66c2", color: "white", display: "inline-block", width: "auto", height: "auto", border: "1px solid black", borderRadius: "5px"}}>Return to Wall</button> 
+
+		<br />
+		<br />
+		<br />
 
 		<div id="post"></div>
 
-		<div>
-			<h3>Leave a Comment</h3>
+		<br />
 
-			<textarea id="commentTextarea" rows="10" cols="75"></textarea>
+		<div>
+			<h3>Comments</h3>
+
+			<textarea id="commentTextarea" rows="10" cols="75" style={{background: "#e3e3e3"}}></textarea>
 			<br />
-			<button id="submitButton">Submit Comment</button>
+			<button id="submitButton" style={{fontSize: "16px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px"}}>Submit Comment</button>
 		</div>
 
 		<br />
-		<h3>View Comments</h3>
 		<div id="comments"></div>
     </div>
 }

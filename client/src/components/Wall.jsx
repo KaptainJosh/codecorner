@@ -22,6 +22,9 @@ function Wall() {
     const navigate = useNavigate();
 
     $(document).ready(() => {
+        //Add background color
+        document.body.style = "background: #c7c7c7";
+
         getNumPosts();
         getPosts();
 
@@ -58,7 +61,7 @@ function Wall() {
         for (let post of posts) {
             let postElement = document.createElement("div");
 
-            const baseStyle = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #edf0ee;"
+            const baseStyle = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #d9d9d9;"
             postElement.style = baseStyle;
 
             let timestamp = parseInt(post["time"]);
@@ -79,7 +82,7 @@ function Wall() {
 
             //Change color on hover to indicate that post is clickable
             postElement.onmouseover = function() {
-                this.style = baseStyle + "background-color: #D3D3D3; cursor: pointer; ";
+                this.style = baseStyle + "background-color: #c2c2c2; cursor: pointer; ";
             };
 
             postElement.onmouseout = function() {
@@ -157,16 +160,20 @@ function Wall() {
     }
     
     return <div className="container">
-        <h1>Wall</h1>
-        <Link to="/login">Logout</Link> 
-        <br />
-        <Link to="/makePost">Make Post</Link> 
+        {/* CodeCorner Logo*/}
+        <img src="/assets/images/CodeCornerLogo.png" alt="Logo"/> 
 
-        <div className="container" id="posts">
+        <h1 style={{textAlign: "center"}}>The Wall</h1>
+        <button onClick={() => navigate("/login")} style={{float: "right", fontSize: "20px", margin: "0px", backgroundColor: "#0a66c2", color: "white", display: "inline-block", width: "auto", height: "auto", border: "1px solid black", borderRadius: "5px"}}>Logout</button> 
+        <button onClick={() => navigate("/makePost")} style={{float: "left", fontSize: "20px", margin: "0px", backgroundColor: "#0a66c2", color: "white", display: "inline-block", width: "auto", height: "auto", border: "1px solid black", borderRadius: "5px"}}>Make Post</button> 
+
+        <br />
+
+        <div className="container" id="posts" style={{marginTop: "40px"}}>
         </div>
 
-        <button onClick={loadPreviousPage} id="prevPageButton" style={{float: "left", fontSize: "20px", margin: "5px"}}>Previous Page</button>
-        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right", fontSize: "20px", margin: "5px"}}>Next Page</button>
+        <button onClick={loadPreviousPage} id="prevPageButton" style={{float: "left", fontSize: "20px", margin: "5px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px"}}>Previous Page</button>
+        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right", fontSize: "20px", margin: "5px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px"}}>Next Page</button>
     </div>
 }
 
