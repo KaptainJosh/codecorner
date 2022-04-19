@@ -139,6 +139,28 @@ app.post('/submitPost', (req, res) => {
 	}
 });
 
+app.post('/submitComment', async (req, res) => {
+	const postId = req.body["postId"];
+	const objectId = new ObjectId(postId);
+
+	let posts = await db.collection('posts').find({ _id: objectId }, {}).toArray();
+	let comments = posts[0]["comments"] || [];	//Make empty array just in case post doesn't have comments
+	
+	let comment = {
+		user: req.body["user"],
+		content: req.body["content"],
+		time: req.body["time"]
+	};
+
+	comments.push(comment);
+
+	try {
+		db.collection('posts').updateOne({ _id: objectId }, { $set: { comments: comments }});
+	} catch (e) {
+		console.log(e);
+	}
+});
+
 app.get('/getPosts', async (req, res) => {
 	const postsPerPage = 10;
 	const postOffset = req.query.page * postsPerPage;
