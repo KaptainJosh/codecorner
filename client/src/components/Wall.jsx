@@ -7,12 +7,24 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
-import Cookies from "js-cookie";
 const hljs = require("highlight.js");
 
 // Registration Component
 function Wall() {
   const navigate = useNavigate();
+
+  function handleClick(event) {
+    event.preventDefault();
+    axios.post("/logout").then((res) => {
+      if (res.data.message === "User Logged Out") {
+        alert(res.data.message);
+      }
+
+      navigate("/login");
+    });
+  }
+  let page = 0;
+  let totalNumPosts;
 
   function handleTag(tag) {
     page = 0;
@@ -29,57 +41,12 @@ function Wall() {
     document.getElementById("prevPageButton").disabled = true;
   }
 
-  function handleClick(event) {
-    event.preventDefault();
-    axios.post("/logout").then((res) => {
-      if (res.data.message === "User Logged Out") {
-        alert(res.data.message);
-      }
-
-      navigate("/login");
-    });
-  }
-  let page = 0;
-  if (Cookies.get("page")) {
-    page = Cookies.get("page");
-  }
-  Cookies.set("page", 0);
-
-  let totalNumPosts;
-
   $(document).ready(() => {
-    //Add background color
-    document.body.style = "background: #c7c7c7";
-
     getNumPosts();
     getPosts();
 
-    const postsPerPage = 10;
-    const totalPages = Math.ceil(totalNumPosts / postsPerPage);
-
-    if (page === 0) {
-      document.getElementById("prevPageButton").disabled = true;
-    }
-
-    if (page === totalPages - 1) {
-      document.getElementById("nextPageButton").disabled = true;
-    }
+    document.getElementById("prevPageButton").disabled = true;
   });
-
-  function getFilteredPosts(tag) {
-    //Remove posts that are already displayed
-    document.getElementById("posts").innerHTML = "";
-
-    fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).then((res) => {
-      res.json().then((posts) => displayPosts(posts));
-    });
-  }
 
   function getPosts() {
     //Remove posts that are already displayed
@@ -97,33 +64,44 @@ function Wall() {
     });
   }
 
+  function getFilteredPosts(tag) {
+    //Remove posts that are already displayed
+    document.getElementById("posts").innerHTML = "";
+
+    fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      res.json().then((posts) => displayPosts(posts));
+    });
+  }
+
   function displayPosts(posts) {
     for (let post of posts) {
       let postElement = document.createElement("div");
 
       const baseStyle =
-        "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #d9d9d9;";
+        "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #edf0ee;";
       postElement.style = baseStyle;
 
       let timestamp = parseInt(post["time"]);
       let timeString = getLocalTimeString(timestamp);
 
-      let postId = post["_id"];
-
       //Display user, time, and content
-      //Also include a hidden link to the post, for accessibility
-      postElement.innerHTML = `<a href="/posts/${postId}" style="display: none">Navigate to post by ${post["user"]}</a>`;
-      postElement.innerHTML += `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
+      postElement.innerHTML = `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
 
       //Add link to specific post
+      let postId = post["_id"];
       postElement.onclick = function () {
-        Cookies.set("page", page);
         navigate(`/posts/${postId}`);
       };
 
       //Change color on hover to indicate that post is clickable
       postElement.onmouseover = function () {
-        this.style = baseStyle + "background-color: #c2c2c2; cursor: pointer; ";
+        this.style = baseStyle + "background-color: #D3D3D3; cursor: pointer; ";
       };
 
       postElement.onmouseout = function () {
@@ -214,45 +192,12 @@ function Wall() {
 
   return (
     <div className="container">
-      {/* CodeCorner Logo*/}
-      <img src="/assets/images/CodeCornerLogo.png" alt="Logo" />
-
-      <h1 style={{ textAlign: "center" }}>The Wall</h1>
-      <button
-        onClick={() => navigate("/login")}
-        style={{
-          float: "right",
-          fontSize: "20px",
-          margin: "0px",
-          backgroundColor: "#0a66c2",
-          color: "white",
-          display: "inline-block",
-          width: "auto",
-          height: "auto",
-          border: "1px solid black",
-          borderRadius: "5px",
-        }}
-      >
+      <h1>Wall</h1>
+      <Link to="/login" onClick={handleClick}>
         Logout
-      </button>
-      <button
-        onClick={() => navigate("/makePost")}
-        style={{
-          float: "left",
-          fontSize: "20px",
-          margin: "0px",
-          backgroundColor: "#0a66c2",
-          color: "white",
-          display: "inline-block",
-          width: "auto",
-          height: "auto",
-          border: "1px solid black",
-          borderRadius: "5px",
-        }}
-      >
-        Make Post
-      </button>
-
+      </Link>
+      <br />
+      <Link to="/makePost">Make Post</Link>
       <br />
       <h3>Tags</h3>
       <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>
@@ -281,35 +226,19 @@ function Wall() {
       </button>
       <button onClick={resetFilter}>Reset Filter</button>
 
-      <div className="container" id="posts" style={{ marginTop: "40px" }}></div>
+      <div className="container" id="posts"></div>
 
       <button
         onClick={loadPreviousPage}
         id="prevPageButton"
-        style={{
-          float: "left",
-          fontSize: "20px",
-          margin: "5px",
-          backgroundColor: "#0a66c2",
-          color: "white",
-          border: "1px solid black",
-          borderRadius: "5px",
-        }}
+        style={{ float: "left", fontSize: "20px", margin: "5px" }}
       >
         Previous Page
       </button>
       <button
         onClick={loadNextPage}
         id="nextPageButton"
-        style={{
-          float: "right",
-          fontSize: "20px",
-          margin: "5px",
-          backgroundColor: "#0a66c2",
-          color: "white",
-          border: "1px solid black",
-          borderRadius: "5px",
-        }}
+        style={{ float: "right", fontSize: "20px", margin: "5px" }}
       >
         Next Page
       </button>
