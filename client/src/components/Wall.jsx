@@ -14,35 +14,27 @@ const hljs = require("highlight.js");
 function Wall() {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-    function handleTag(tag)
-    {
-        page = 0;
-        getNumFilteredPosts(tag);
-        getFilteredPosts(tag);
+  function handleTag(tag) {
+    page = 0;
+    getNumFilteredPosts(tag);
+    getFilteredPosts(tag);
 
-        document.getElementById("prevPageButton").disabled = true;
-    }
+    document.getElementById("prevPageButton").disabled = true;
+  }
 
-    function resetFilter() 
-    {
-        getNumPosts();
-        getPosts();
+  function resetFilter() {
+    getNumPosts();
+    getPosts();
 
-        document.getElementById("prevPageButton").disabled = true;
-    }
+    document.getElementById("prevPageButton").disabled = true;
+  }
 
-    $(document).ready(() => {
-        getNumPosts();
-        getPosts();
-=======
   function handleClick(event) {
     event.preventDefault();
     axios.post("/logout").then((res) => {
       if (res.data.message === "User Logged Out") {
         alert(res.data.message);
       }
->>>>>>> main
 
       navigate("/login");
     });
@@ -69,67 +61,25 @@ function Wall() {
       document.getElementById("prevPageButton").disabled = true;
     }
 
-<<<<<<< HEAD
-    function getFilteredPosts(tag)
-    {
-        //Remove posts that are already displayed
-        document.getElementById('posts').innerHTML = "";
-        
-        fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            }).then(res => {
-                res.json().then(posts => displayPosts(posts));
-            }
-        );
-    }
-
-    function displayPosts(posts) {
-        for (let post of posts) {
-            let postElement = document.createElement("div");
-
-            const baseStyle = "border: 1px solid black; border-radius: 15px; margin: 10px; padding: 5px; background-color: #edf0ee;"
-            postElement.style = baseStyle;
-
-            let timestamp = parseInt(post["time"]);
-            let timeString = getLocalTimeString(timestamp);
-
-            //Display user, time, and content
-            postElement.innerHTML = `<p><b style="font-size: 14px;">${post["user"]}</b><br/>${timeString}<hr>${post["content"]}<br/></p>`;
-            
-            //Add link to specific post
-            let postId = post["_id"];
-            postElement.onclick = function() {
-                navigate(`/posts/${postId}`);
-            };
-
-            //Change color on hover to indicate that post is clickable
-            postElement.onmouseover = function() {
-                this.style = baseStyle + "background-color: #D3D3D3; cursor: pointer; ";
-            };
-
-            postElement.onmouseout = function() {
-                this.style = baseStyle;
-            };
-
-            //Display tags, if there are any
-            if ("tags" in post && post["tags"].length > 0) {
-                postElement.innerHTML += "<hr>Tags: ";
-                for (let tag of post["tags"]) {
-                    postElement.innerHTML += tag + ", ";
-                }
-                postElement.innerHTML = postElement.innerHTML.slice(0, -2); //Remove trailing comma and space
-            }
-
-            document.getElementById('posts').appendChild(postElement);
-=======
     if (page === totalPages - 1) {
       document.getElementById("nextPageButton").disabled = true;
     }
   });
+
+  function getFilteredPosts(tag) {
+    //Remove posts that are already displayed
+    document.getElementById("posts").innerHTML = "";
+
+    fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      res.json().then((posts) => displayPosts(posts));
+    });
+  }
 
   function getPosts() {
     //Remove posts that are already displayed
@@ -185,7 +135,6 @@ function Wall() {
         postElement.innerHTML += "<hr>Tags: ";
         for (let tag of post["tags"]) {
           postElement.innerHTML += tag + ", ";
->>>>>>> main
         }
         postElement.innerHTML = postElement.innerHTML.slice(0, -2); //Remove trailing comma and space
       }
@@ -211,30 +160,22 @@ function Wall() {
     });
   }
 
-<<<<<<< HEAD
-    function getNumFilteredPosts(tag) 
-    {
-        fetch(`/getNumFilteredPosts/${tag}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-        }).then(res => {
-            res.json().then(tmp => totalNumPosts = tmp.length);
-        });
-    }
+  function getNumFilteredPosts(tag) {
+    fetch(`/getNumFilteredPosts/${tag}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      res.json().then((tmp) => (totalNumPosts = tmp.length));
+    });
+  }
 
-    //Code inspired by https://stackoverflow.com/questions/44060804/convert-epoch-time-to-human-readable-with-specific-timezone
-    function getLocalTimeString(timestamp) {
-        let date = new Date(timestamp * 1000);
-        let utc = date.getTime() + (date.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
-=======
   //Code inspired by https://stackoverflow.com/questions/44060804/convert-epoch-time-to-human-readable-with-specific-timezone
   function getLocalTimeString(timestamp) {
     let date = new Date(timestamp * 1000);
     let utc = date.getTime() + date.getTimezoneOffset() * 60000; //This converts to UTC 00:00
->>>>>>> main
 
     //Convert to user's local time zone
     const localOffset = new Date().getTimezoneOffset() / -60;
@@ -269,29 +210,6 @@ function Wall() {
         document.getElementById("prevPageButton").disabled = true;
       }
     }
-<<<<<<< HEAD
-    
-    return <div className="container">
-        <h1>Wall</h1>
-        <Link to="/login" onClick={handleClick}>Logout</Link> 
-        <br />
-        <Link to="/makePost">Make Post</Link> 
-        <br />
-        <h3>Tags</h3>
-        <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>Javascript</button>
-        <button value="C%2B%2B" onClick={(e) => handleTag(e.target.value)}>C++</button>
-        <button value="Web Dev" onClick={(e) => handleTag(e.target.value)}>Web Dev</button>
-        <button value="Embedded Systems" onClick={(e) => handleTag(e.target.value)}>Embedded Systems</button>
-        <button value="Computer Graphics" onClick={(e) => handleTag(e.target.value)}>Computer Graphics</button>
-        <button value="C%23" onClick={(e) => handleTag(e.target.value)}>C#</button>
-        <button onClick={resetFilter}>Reset Filter</button>
-
-        <div className="container" id="posts">
-        </div>
-
-        <button onClick={loadPreviousPage} id="prevPageButton" style={{float: "left", fontSize: "20px", margin: "5px"}}>Previous Page</button>
-        <button onClick={loadNextPage} id="nextPageButton" style={{float: "right", fontSize: "20px", margin: "5px"}}>Next Page</button>
-=======
   }
 
   return (
@@ -336,6 +254,32 @@ function Wall() {
       </button>
 
       <br />
+      <h3>Tags</h3>
+      <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>
+        Javascript
+      </button>
+      <button value="C%2B%2B" onClick={(e) => handleTag(e.target.value)}>
+        C++
+      </button>
+      <button value="Web Dev" onClick={(e) => handleTag(e.target.value)}>
+        Web Dev
+      </button>
+      <button
+        value="Embedded Systems"
+        onClick={(e) => handleTag(e.target.value)}
+      >
+        Embedded Systems
+      </button>
+      <button
+        value="Computer Graphics"
+        onClick={(e) => handleTag(e.target.value)}
+      >
+        Computer Graphics
+      </button>
+      <button value="C%23" onClick={(e) => handleTag(e.target.value)}>
+        C#
+      </button>
+      <button onClick={resetFilter}>Reset Filter</button>
 
       <div className="container" id="posts" style={{ marginTop: "40px" }}></div>
 
@@ -369,7 +313,6 @@ function Wall() {
       >
         Next Page
       </button>
->>>>>>> main
     </div>
   );
 }
