@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate} from "react-router-dom";
-//import { Link} from "react-router-dom";
+import { Link} from "react-router-dom";
 import $ from "jquery";
 const hljs = require("highlight.js")
 
@@ -10,6 +10,9 @@ function MakePost() {
     const navigate = useNavigate();
     let tags = [];
     $(document).ready(() => {
+        //Add background color
+        document.body.style = "background: #c7c7c7";
+
         updatePostPreview();
     
         $("#submitButton").click(() => {
@@ -21,7 +24,8 @@ function MakePost() {
                 user: "Prototype",
                 time: timestamp,
                 content: $("#postTextarea").val(),
-                tags: tags
+                tags: tags,
+                comments: []
             };
     
             fetch("/submitPost", {
@@ -213,9 +217,16 @@ function MakePost() {
 
     return <div className="container">
         <title>Make Post</title>
-        <h1>Make Post</h1>
 
-        <textarea id="postTextarea" rows="25" cols="120"></textarea>
+        {/* CodeCorner Logo*/}
+        <img src="/assets/images/CodeCornerLogo.png" alt="Logo"/> 
+        
+        <h1 style={{textAlign: "center"}}>Make Post</h1>
+
+        <button onClick={() => navigate("/wall")} style={{fontSize: "20px", marginBottom: "15px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px"}}>Return to Wall</button> 
+        <br />
+
+        <textarea id="postTextarea" rows="25" cols="120" style={{background: "#e3e3e3"}}></textarea>
         <br />
 
         <ul id="tagSelection">
@@ -227,9 +238,10 @@ function MakePost() {
             <li> <button className="tagToAdd">C#</button></li>
         </ul>
 
-        <button id="codeButton">Highlight Code Snippet</button>
-        <button id="submitButton">Submit</button>
+        <button id="codeButton" style={{fontSize: "16px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px", display: "inline-block", marginRight: "5px"}}>Highlight Code Snippet</button>
+        <button id="submitButton" style={{fontSize: "16px", backgroundColor: "#0a66c2", color: "white", border: "1px solid black", borderRadius: "5px", display: "inline-block"}}>Submit</button>
 
+        <br />
         <br />
 
         <h2>Post Preview:</h2>
