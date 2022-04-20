@@ -32,6 +32,21 @@ function Wall() {
 
   let totalNumPosts;
 
+  function handleTag(tag) {
+    page = 0;
+    getNumFilteredPosts(tag);
+    getFilteredPosts(tag);
+
+    document.getElementById("prevPageButton").disabled = true;
+  }
+
+  function resetFilter() {
+    getNumPosts();
+    getPosts();
+
+    document.getElementById("prevPageButton").disabled = true;
+  }
+
   $(document).ready(() => {
     //Add background color
     document.body.style = "background: #c7c7c7";
@@ -57,6 +72,21 @@ function Wall() {
 
     //Query and display posts
     fetch("/getPosts?page=" + page, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      res.json().then((posts) => displayPosts(posts));
+    });
+  }
+
+  function getFilteredPosts(tag) {
+    //Remove posts that are already displayed
+    document.getElementById("posts").innerHTML = "";
+
+    fetch(`/getFilteredPosts?tag=${tag}&page=${page}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -120,6 +150,18 @@ function Wall() {
   //Than there are poosts
   function getNumPosts() {
     fetch("/getNumPosts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      res.json().then((tmp) => (totalNumPosts = tmp.length));
+    });
+  }
+
+  function getNumFilteredPosts(tag) {
+    fetch(`/getNumFilteredPosts/${tag}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -212,6 +254,33 @@ function Wall() {
       </button>
 
       <br />
+      <br />
+      <h3>Tags</h3>
+      <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>
+        Javascript
+      </button>
+      <button value="C%2B%2B" onClick={(e) => handleTag(e.target.value)}>
+        C++
+      </button>
+      <button value="Web Dev" onClick={(e) => handleTag(e.target.value)}>
+        Web Dev
+      </button>
+      <button
+        value="Embedded Systems"
+        onClick={(e) => handleTag(e.target.value)}
+      >
+        Embedded Systems
+      </button>
+      <button
+        value="Computer Graphics"
+        onClick={(e) => handleTag(e.target.value)}
+      >
+        Computer Graphics
+      </button>
+      <button value="C%23" onClick={(e) => handleTag(e.target.value)}>
+        C#
+      </button>
+      <button onClick={resetFilter}>Reset Filter</button>
 
       <div className="container" id="posts" style={{ marginTop: "40px" }}></div>
 
