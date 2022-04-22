@@ -201,6 +201,8 @@ app.post("/submitComment", async (req, res) => {
       { _id: objectId },
       { $set: { comments: comments } }
     );
+
+    res.send("Comment submitted!");
   } catch (e) {
     console.log(e);
   }

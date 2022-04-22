@@ -8,7 +8,10 @@ const hljs = require("highlight.js");
 function Post() {
   var thePost = null;
   var numLikes;
+  let username = "";
+
   const navigate = useNavigate();
+
   $(document).ready(() => {
     //Add background color
     document.body.style = "background: #c7c7c7";
@@ -33,7 +36,6 @@ function Post() {
     });
 
     $("#submitButton").click(() => {
-      console.log($("#commentTextarea").val());
       const timestamp = getUTCTimestampSeconds();
 
       const postData = {
@@ -50,14 +52,14 @@ function Post() {
           Accept: "application/json",
         },
         body: JSON.stringify(postData),
-      }).then((res) => console.log("Comment submitted!"));
+      }).then((res) => {
+        console.log(res);
 
-      $("#commentTextarea").val("");
+        $("#commentTextarea").val("");
 
-      //Insert new comment onto page to avoid annoying reloads
-      let newComment = formatComment(postData);
-      const commentRoot = document.getElementById("comments");
-      commentRoot.appendChild(newComment);
+        //Reload page to show new comment
+        window.location.reload();
+      });
     });
   });
 
