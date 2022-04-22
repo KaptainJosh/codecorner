@@ -14,7 +14,7 @@ function Post() {
     document.body.style = "background: #c7c7c7";
 
     //Get post ID since path is of form /posts/ID
-    const postId = window.location.pathname.split("/")[2];
+    const postId = window.location.href.split("/")[5];
 
     fetch(`/getSpecificPost/${postId}`, {
       method: "GET",
