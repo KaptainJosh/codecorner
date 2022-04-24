@@ -1,0 +1,23 @@
+.theme-dark {
+  --dark-text: #292929;
+  --light-text: #f9f8f8;
+  --dark-background: rgb(140, 150, 160);
+  --light-background: #586f7c;
+  --accent: #b8dbd9;
+  --button-border: #b8dbd9;
+}
+
+.theme-light {
+  --dark-text: #5e4b56;
+  --light-text: #5e4b56;
+  --dark-background: rgb(245, 245, 245);
+  --light-background: #eddcd2;
+  --accent: #dbe7e4;
+  --button-border: #5e4b56;
+}
+
+html,
+#root {
+  background-color: var(--dark-background);
+  color: var(--dark-text);
+}

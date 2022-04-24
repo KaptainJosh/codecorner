@@ -208,7 +208,18 @@ function MakePost() {
       <title>Make Post</title>
       {/* CodeCorner Logo*/}
       <img src="/assets/images/CodeCornerLogo.png" alt="Logo" />
-      <h1 style={{ textAlign: "center" }}>Make Post</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 600,
+        }}
+      >
+        Make Post
+      </h1>
       <button
         onClick={() => navigate("/wall")}
         style={{
@@ -218,6 +229,8 @@ function MakePost() {
           color: "white",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Return to Wall
@@ -266,6 +279,8 @@ function MakePost() {
           borderRadius: "5px",
           display: "inline-block",
           marginRight: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Highlight Code Snippet
@@ -279,6 +294,8 @@ function MakePost() {
           border: "1px solid black",
           borderRadius: "5px",
           display: "inline-block",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Submit

@@ -12,6 +12,24 @@ const hljs = require("highlight.js");
 
 // Registration Component
 function Wall() {
+  const tagStyle = {
+    float: "left",
+    fontSize: "20px",
+    margin: "0px",
+    marginRight: "20px",
+    backgroundColor: "#0a66c2",
+    color: "white",
+    display: "inline-block",
+    width: "auto",
+    height: "auto",
+    border: "1px solid black",
+    borderRadius: "5px",
+    fontFamily: "Montserrat",
+    fontStyle: "normal",
+    // top: "50%",
+    // left: "50%",
+  };
+
   const navigate = useNavigate();
 
   function handleClick(event) {
@@ -217,7 +235,8 @@ function Wall() {
       {/* CodeCorner Logo*/}
       <img src="/assets/images/CodeCornerLogo.png" alt="Logo" />
 
-      <h1 style={{ textAlign: "center" }}>The Wall</h1>
+      <br />
+
       <button
         onClick={() => navigate("/login")}
         style={{
@@ -231,6 +250,9 @@ function Wall() {
           height: "auto",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+          marginTop: 30,
         }}
       >
         Logout
@@ -248,6 +270,9 @@ function Wall() {
           height: "auto",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+          marginTop: 30,
         }}
       >
         Make Post
@@ -255,32 +280,90 @@ function Wall() {
 
       <br />
       <br />
-      <h3>Tags</h3>
-      <button value="JavaScript" onClick={(e) => handleTag(e.target.value)}>
+      <h1
+        style={{
+          textAlign: "center",
+          marginTop: 50,
+          fontSize: 50,
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+          fontWeight: 500,
+        }}
+      >
+        The Wall
+      </h1>
+
+      {/* <br />
+      <br />
+      <br />
+      <br /> */}
+      <br />
+      <h3
+        style={{
+          float: "left",
+          fontSize: "30px",
+
+          marginRight: "20px",
+
+          display: "inline-block",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+        }}
+      >
+        Filter by Tag
+      </h3>
+      <br />
+      <br />
+      <br />
+      <br />
+      <button
+        value="JavaScript"
+        style={tagStyle}
+        onClick={(e) => handleTag(e.target.value)}
+      >
         Javascript
       </button>
-      <button value="C%2B%2B" onClick={(e) => handleTag(e.target.value)}>
+      <button
+        value="C%2B%2B"
+        onClick={(e) => handleTag(e.target.value)}
+        style={tagStyle}
+      >
         C++
       </button>
-      <button value="Web Dev" onClick={(e) => handleTag(e.target.value)}>
+      <button
+        value="Web Dev"
+        onClick={(e) => handleTag(e.target.value)}
+        style={tagStyle}
+      >
         Web Dev
       </button>
       <button
         value="Embedded Systems"
         onClick={(e) => handleTag(e.target.value)}
+        style={tagStyle}
       >
         Embedded Systems
       </button>
       <button
         value="Computer Graphics"
         onClick={(e) => handleTag(e.target.value)}
+        style={tagStyle}
       >
         Computer Graphics
       </button>
-      <button value="C%23" onClick={(e) => handleTag(e.target.value)}>
+      <button
+        value="C%23"
+        onClick={(e) => handleTag(e.target.value)}
+        style={tagStyle}
+      >
         C#
       </button>
-      <button onClick={resetFilter}>Reset Filter</button>
+      <button onClick={resetFilter} style={tagStyle}>
+        Reset Filter
+      </button>
+
+      <br />
+      <br />
 
       <div className="container" id="posts" style={{ marginTop: "40px" }}></div>
 
@@ -295,6 +378,8 @@ function Wall() {
           color: "white",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Previous Page
@@ -310,6 +395,8 @@ function Wall() {
           color: "white",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Next Page

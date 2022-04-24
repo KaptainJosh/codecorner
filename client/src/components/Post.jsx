@@ -168,6 +168,8 @@ function Post() {
           height: "auto",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Logout
@@ -185,6 +187,8 @@ function Post() {
           height: "auto",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Return to Wall
@@ -197,11 +201,31 @@ function Post() {
       <div id="post"></div>
 
       <br />
-      <button onClick={handleClick} id="likes"></button>
+      <button
+        onClick={handleClick}
+        id="likes"
+        style={{
+          fontSize: "16px",
+          backgroundColor: "#0a66c2",
+          color: "white",
+          border: "1px solid black",
+          borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+        }}
+      ></button>
       <br />
 
       <div>
-        <h3>Comments</h3>
+        <h3
+          style={{
+            marginTop: 30,
+            fontFamily: "Montserrat",
+            fontStyle: "normal",
+          }}
+        >
+          Comments
+        </h3>
 
         <textarea
           id="commentTextarea"
@@ -218,6 +242,8 @@ function Post() {
             color: "white",
             border: "1px solid black",
             borderRadius: "5px",
+            fontFamily: "Montserrat",
+            fontStyle: "normal",
           }}
         >
           Submit Comment
