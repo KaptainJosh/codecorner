@@ -10,7 +10,7 @@ function MakePost() {
   let tags = [];
   $(document).ready(() => {
     //Add background color
-    document.body.style = "background: #c7c7c7";
+    //document.body.style = "background: #c7c7c7";
 
     updatePostPreview();
 
@@ -207,8 +207,22 @@ function MakePost() {
     <div className="container">
       <title>Make Post</title>
       {/* CodeCorner Logo*/}
-      <img src="/assets/images/CodeCornerLogo.png" alt="Code Corner Logo, a backwards C followed by a regular C" />
-      <h1 style={{ textAlign: "center" }}>Make Post</h1>
+      <img
+        src="/assets/images/CodeCornerLogo.png"
+        alt="Code Corner Logo, a backwards C followed by a regular C"
+      />
+      <h1
+        style={{
+          textAlign: "center",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 600,
+        }}
+      >
+        Make Post
+      </h1>
       <button
         onClick={() => navigate("/wall")}
         style={{
@@ -218,6 +232,8 @@ function MakePost() {
           color: "white",
           border: "1px solid black",
           borderRadius: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Return to Wall
@@ -266,6 +282,8 @@ function MakePost() {
           borderRadius: "5px",
           display: "inline-block",
           marginRight: "5px",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Highlight Code Snippet
@@ -279,6 +297,8 @@ function MakePost() {
           border: "1px solid black",
           borderRadius: "5px",
           display: "inline-block",
+          fontFamily: "Montserrat",
+          fontStyle: "normal",
         }}
       >
         Submit
