@@ -207,7 +207,7 @@ function MakePost() {
     <div className="container">
       <title>Make Post</title>
       {/* CodeCorner Logo*/}
-      <img src="/assets/images/CodeCornerLogo.png" alt="Logo" />
+      <img src="/assets/images/CodeCornerLogo.png" alt="Code Corner Logo, a backwards C followed by a regular C" />
       <h1 style={{ textAlign: "center" }}>Make Post</h1>
       <button
         onClick={() => navigate("/wall")}

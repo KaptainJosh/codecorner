@@ -50,6 +50,7 @@ function Wall() {
   $(document).ready(() => {
     //Add background color
     document.body.style = "background: #c7c7c7";
+    document.title = "The Wall - Code Corner";
 
     getNumPosts();
     getPosts();
@@ -215,7 +216,7 @@ function Wall() {
   return (
     <div className="container">
       {/* CodeCorner Logo*/}
-      <img src="/assets/images/CodeCornerLogo.png" alt="Logo" />
+      <img src="/assets/images/CodeCornerLogo.png" alt="Code Corner Logo, a backwards C followed by a regular C" />
 
       <h1 style={{ textAlign: "center" }}>The Wall</h1>
       <button

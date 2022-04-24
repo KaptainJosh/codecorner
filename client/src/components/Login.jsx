@@ -71,7 +71,7 @@ function Login() {
     
     return <div className="container">
         {/* CodeCorner Logo*/}
-        <img src="/assets/images/CodeCornerLogo.png" alt="Logo"/> 
+        <img src="/assets/images/CodeCornerLogo.png" alt="Code Corner Logo, a backwards C followed by a regular C"/> 
         {/* Login Form */}
         
         <form>
