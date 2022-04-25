@@ -128,6 +128,7 @@ function Registration() {
   //document.body.style = "background: #c7c7c7";
   return (
     <div className="container">
+      <title>Registration</title>
       {/* CodeCorner Logo*/}
       <img
         style={logo}
@@ -140,11 +141,12 @@ function Registration() {
         <h3 style={header}>Join Us</h3>
         {/*Username Field */}
         <div className="form-group">
-          <label htmlFor="InputUsername" style={inputLabel}>
+          <label htmlFor="username" style={inputLabel}>
             Username
           </label>
           <input
             required
+            id="username"
             onChange={handleChange}
             name="username"
             value={input.username}
@@ -156,11 +158,12 @@ function Registration() {
         </div>
         {/*Password Field */}
         <div className="form-group">
-          <label htmlFor="InputPassword" style={inputLabel}>
+          <label htmlFor="password" style={inputLabel}>
             Password
           </label>
           <input
             required
+            id="password"
             onChange={handleChange}
             name="password"
             value={input.password}
